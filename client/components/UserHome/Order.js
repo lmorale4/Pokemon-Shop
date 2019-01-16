@@ -1,6 +1,6 @@
-import React from "react";
-import Item from "./Item";
-import { Link } from "react-router-dom";
+import React from 'react';
+import Item from './Item';
+import { Link } from 'react-router-dom';
 
 const Order = props => {
   const { order } = props;
@@ -9,7 +9,7 @@ const Order = props => {
     <div
       className="progress-bar"
       role="progressbar"
-      style={{ width: "33%" }}
+      style={{ width: '33%' }}
       aria-valuenow="33"
       aria-valuemin="0"
       aria-valuemax="100"
@@ -22,7 +22,7 @@ const Order = props => {
     <div
       className="progress-bar"
       role="progressbar"
-      style={{ width: "66%" }}
+      style={{ width: '66%' }}
       aria-valuenow="66"
       aria-valuemin="0"
       aria-valuemax="100"
@@ -35,7 +35,7 @@ const Order = props => {
     <div
       className="progress-bar"
       role="progressbar"
-      style={{ width: "100%" }}
+      style={{ width: '100%' }}
       aria-valuenow="100"
       aria-valuemin="0"
       aria-valuemax="100"
@@ -46,9 +46,9 @@ const Order = props => {
 
   let progress;
 
-  if (order.status === "pending") {
+  if (order.status === 'pending') {
     progress = pending;
-  } else if (order.status === "shipped") {
+  } else if (order.status === 'shipped') {
     progress = shipped;
   } else {
     progress = delivered;
@@ -64,7 +64,7 @@ const Order = props => {
         <div className="col-3">
           <p>TOTAL:</p>
           <p>
-            {order.total}{" "}
+            {order.total}{' '}
             <img className="currency img-fluid" src="/PokeBallCurrency.png" />
           </p>
         </div>
@@ -75,11 +75,7 @@ const Order = props => {
         <div className="col-3">
           <p>ORDER # {order.id}</p>
           <p>
-            <Link
-              to={`/orders/${order.id}`}
-            >
-              Order Details
-            </Link>
+            <Link to={`/orders/${order.id}`}>Order Details</Link>
           </p>
         </div>
       </div>

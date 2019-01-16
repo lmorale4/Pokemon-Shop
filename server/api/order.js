@@ -1,32 +1,27 @@
-const router = require("express").Router();
-const { Order, OrderItem } = require("../db/models");
+const router = require('express').Router();
+const { Order, OrderItem } = require('../db/models');
 
-router.get("/", async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
-    const orders = await Order.findAll({
-      include: [{ all: true }]
-    });
-    res.json(orders);
+    if (req.user) {
+      const orders = await Order.findAll({
+        include: [{ all: true }],
+      });
+      if (req.user.admin) res.json(orders);
+      else res.json(orders.filter(order => order.userId === req.user.id));
+    } else {
+      res.json([]);
+    }
   } catch (err) {
     next(err);
   }
 });
 
-router.get("/", async (req, res, next) => {
-  try {
-    const orders = await Order.findAll({
-      include: [{ all: true }]});
-    res.json(orders);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.get("/:id", async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id);
 
-    if (order) {
+    if (order && (req.user.admin || order.userId === req.user.id)) {
       res.json(order);
     } else {
       res.sendStatus(404);
@@ -36,7 +31,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/:id", async (req, res, next) => {
+router.post('/:id', async (req, res, next) => {
   try {
     const order = await Order.create(req.body);
 
@@ -44,7 +39,7 @@ router.post("/:id", async (req, res, next) => {
       await OrderItem.create({
         qty: item.qty,
         pokemonId: item.itemId,
-        orderId: order.id
+        orderId: order.id,
       });
     });
     res.status(200).json(order);
